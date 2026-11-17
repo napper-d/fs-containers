@@ -1,0 +1,32 @@
+### 访问计数器（每请求一次 visits +1）
+GET http://localhost:3000/ HTTP/1.1
+
+### 列出所有 todos
+GET http://localhost:3000/todos HTTP/1.1
+
+### 创建一条 todo
+# @name createTodo
+POST http://localhost:3000/todos HTTP/1.1
+Content-Type: application/json
+
+{
+  "text": "learn docker"
+}
+
+### 取出上一步返回的 _id
+@todoId = {{createTodo.response.body.$._id}}
+
+### GET 单条 todo
+GET http://localhost:3000/todos/{{todoId}} HTTP/1.1
+
+### PUT 更新单条 todo（改文本 + 标记完成）
+PUT http://localhost:3000/todos/{{todoId}} HTTP/1.1
+Content-Type: application/json
+
+{
+  "text": "learn docker compose",
+  "done": true
+}
+
+### 删除单条 todo
+DELETE http://localhost:3000/todos/{{todoId}} HTTP/1.1
