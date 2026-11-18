@@ -11,8 +11,11 @@ services:
       - MONGO_URL=mongodb://the_username:the_password@mongo:27017/the_database
       - REDIS_URL=redis://redis:6379
     depends_on:
-      - mongo
-      - redis
+      mongo:
+        condition: service_healthy
+      redis:
+        condition: service_healthy
+    restart: unless-stopped
   mongo:
     image: mongo
     environment:
@@ -22,9 +25,19 @@ services:
     volumes:
       - ./todo-backend/mongo/mongo-init.js:/docker-entrypoint-initdb.d/mongo-init.js
       - mongo_data:/data/db
+    healthcheck:
+      test: ['CMD', 'mongosh', '--quiet', '--eval', "db.adminCommand('ping')"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
   redis:
     image: redis
     command: ['redis-server', '--appendonly', 'yes']
+    healthcheck:
+      test: ['CMD', 'redis-cli', 'ping']
+      interval: 5s
+      timeout: 5s
+      retries: 20
   nginx:
     image: nginx:1.29
     volumes:
