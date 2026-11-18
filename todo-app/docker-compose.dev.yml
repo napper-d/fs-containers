@@ -1,0 +1,17 @@
+services:
+  app:
+    image: todo-frontend-dev
+    volumes:
+      - ./todo-frontend:/usr/src/app # Source code from the host, so Vite picks up the changes
+      - /usr/src/app/node_modules # Keep the dependencies installed inside the image
+    environment:
+      - VITE_BACKEND_URL=http://localhost:3000
+  nginx:
+    image: nginx:1.29
+    volumes:
+      - ./nginx.dev.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    container_name: reverse-proxy
+    depends_on:
+      - app

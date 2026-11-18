@@ -9,6 +9,6 @@ export default defineConfig({
     globals: true,
   }, 
   server: {
-    allowHosts: ['app', 'localhost'],
+    allowedHosts: ['app', 'localhost'],
   }
 })
