@@ -10,5 +10,8 @@ export default defineConfig({
   }, 
   server: {
     allowedHosts: ['app', 'localhost'],
+    watch: {
+      usePolling: true,
+    },
   }
 })
