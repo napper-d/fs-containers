@@ -1,5 +1,5 @@
 services:
   frontend:
-    build: ./todo-frontend
+    build: .
     ports:
       - 5173:80
